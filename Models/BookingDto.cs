@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models
+{
+    public class BookingDto
+    {
+        public int BookingId { get; set; }
+        public int PropertyId { get; set; }
+        public int UserId { get; set; }
+        public DateTime BookingDate { get; set; }
+        public string BookingStatus { get; set; }
+    }
+}
