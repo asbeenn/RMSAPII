@@ -16,8 +16,8 @@ namespace Common
         }
         public enum RoleNames
         {
-            Admin,
-            Customer,
+            Admin = 1,
+            Customer ,
             Tenant
         }
     }

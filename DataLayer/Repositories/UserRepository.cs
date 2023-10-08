@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models.PropertyModel;
 using Models.ViewModel;
-
-
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace DataLayer.Repositories
 {
@@ -33,14 +31,6 @@ namespace DataLayer.Repositories
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
-            // Check if a user with the same email already exists
-            var existingUser = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Email == userDto.Email);
-
-            if (existingUser != null)
-            {
-                return false; //BadRequest( "User with this email already exists" );
-            }
-
             var user = new ApplicationUser
             {
                 FirstName = userDto.FirstName,
@@ -57,12 +47,16 @@ namespace DataLayer.Repositories
                 ZipCode = userDto.ZipCode,
 
             };
+            var roleId = (int)Enum.Parse(typeof(Enums.RoleNames), userDto.RoleName);
+            user.UserRoles = new List<UserRole>();
+            user.UserRoles.Add(new UserRole
+            {
+                RoleId = roleId
+            });
 
             // Add the user to the database
             _dbContext.ApplicationUsers.Add(user);
             await _dbContext.SaveChangesAsync();
-
-            // Return a success response
             return true;
         }
 
@@ -73,41 +67,21 @@ namespace DataLayer.Repositories
             var userEntity = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.UserId == userId);
 
             if (userEntity == null)
-            {
                 return null; // User not found
-            }
 
             // Map the user entity to UserDto
             return _mapper.Map<UserDto>(userEntity);
         }
 
-
-
-        //public Task<ApplicationUser> Login(UserDto userDto)
-        //{
-        //    string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-        //    // Find a user with the given email
-        //    var user =  _dbContext.ApplicationUsers
-        //        .FirstOrDefault(u => u.Email == userDto.Email);
-
-        //    if (user == null)
-        //    {
-        //        // User with the given email doesn't exist
-        //        return null;
-        //    }
-
-        //    // Validate the password (you need to implement password hashing)
-        //    if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.PasswordHash))
-        //        return BadRequest("Username or password incorrect.");
-
-            
-
-        //    return Ok(new { token });
-        //}
+        public async Task<UserDto?> GetByEmail(string email)
+        {
+            var user =  await _dbContext.ApplicationUsers.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            if (user != null)
+                return _mapper.Map<UserDto>(user);
+            return null;
+        }
 
        
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
+

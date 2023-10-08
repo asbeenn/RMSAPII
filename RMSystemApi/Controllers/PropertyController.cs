@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.PropertyModel;
 using Services.Interfaces;
@@ -38,6 +40,7 @@ namespace RMSystemApi.Controllers
             return Ok(property);
         }
 
+        [Authorize(Roles = "Admin, Tenant")]
         [HttpPost]
         public async Task<IActionResult> CreateProperty(PropertyDto model)
         {

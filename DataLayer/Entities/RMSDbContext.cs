@@ -7,29 +7,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Common;
 
 namespace DataLayer.Entities
 {
     public partial class RMSDbContext : DbContext
 
     {
-        //public RMSDbContext()
-        //{
-        //}
-        public RMSDbContext(DbContextOptions<RMSDbContext> options) : base(options)
+        private readonly AppSettings _appSettings;
+
+        public RMSDbContext(DbContextOptions<RMSDbContext> options, IOptions<AppSettings> appSettings) : base(options)
         {
+            _appSettings = appSettings.Value;
         }
 
-        public virtual DbSet<ApplicationUser>  ApplicationUsers { get; set; }
+        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
+
+        public virtual DbSet<Role> Roles{get;set;}
+        public virtual DbSet<UserRole> UserRoles{get;set;}
         //public virtual DbSet<Booking> Bookings { get; set; }
         //public virtual DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("data source=LENOVO-Y700\\MSSQL2022;initial catalog=RMSDb;persist security info=True;User Id=sa;Password=abc123#;MultipleActiveResultSets=True;App=EntityFramework;");
+            {                
+                optionsBuilder.UseSqlServer(_appSettings.DefaultConnectionString);
+                //optionsBuilder.UseSqlServer("data source=LENOVO-Y700\\MSSQL2022;initial catalog=RMSDb;persist security info=True;User Id=sa;Password=abc123#;MultipleActiveResultSets=True;App=EntityFramework;");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

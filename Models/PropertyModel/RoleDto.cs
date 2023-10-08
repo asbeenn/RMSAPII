@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.Entities
+namespace Models.PropertyModel
 {
-    public class Role
+    public class RoleDto
     {
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } = 0;
         public string RoleName { get; set; }
     }
 }

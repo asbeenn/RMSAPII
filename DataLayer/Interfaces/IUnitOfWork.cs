@@ -10,6 +10,9 @@ namespace DataLayer.Interfaces
     {
         IPropertyRepository PropertyRepository { get; set; }
         IUserRepository UserRepository { get; set; }
+        IRoleRepository RoleRepository { get; set; }
+        IUserRoleRepository UserRoleRepository { get; set; }
+
 
     }
 }

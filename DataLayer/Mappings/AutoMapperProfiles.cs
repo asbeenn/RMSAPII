@@ -17,6 +17,9 @@ namespace Models.Mappings
             CreateMap<PropertyDto, Property>().ReverseMap();
             CreateMap<UpdatePropertyDto, Property>().ReverseMap();
             CreateMap<UserDto,ApplicationUser>().ReverseMap();
+
+            CreateMap<RoleDto, Role>().ReverseMap();
+            CreateMap<UserRoleDto, UserRole>().ReverseMap();
         }
     }
 }

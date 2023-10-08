@@ -11,16 +11,16 @@ namespace Models.ViewModel
 {
     public class UserDto
     {
-       
-      
-       
+        public int UserId { get; set; }
+
+
         [MaxLength(50)]
-       
+
         public string FirstName { get; set; }
         [MaxLength(50)]
         public string? MiddleName { get; set; }
         [MaxLength(50)]
-   
+
         public string LastName { get; set; }
 
         [EmailAddress]
@@ -31,22 +31,24 @@ namespace Models.ViewModel
 
         [MaxLength(100)]
         public string PhotoUrl { get; set; }
-       
+
         [MaxLength(100)]
         public string IDUrl { get; set; }
 
-       
+
         [MaxLength(50)]
         public string Country { get; set; }
         [MaxLength(255)]
-      
+
         public string StreetAddress1 { get; set; }
         [MaxLength(255)]
         public string? StreetAddress2 { get; set; }
         [MaxLength(255)]
         public string CitySuburbTown { get; set; }
-   
+
         public int? ZipCode { get; set; }
+
+        public string RoleName { get; set; }
 
 
        
