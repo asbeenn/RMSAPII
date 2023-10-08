@@ -14,7 +14,7 @@ namespace Services.Interfaces
         {
             Task<bool> CreateUser(UserDto model);
             Task<UserDto> GetUserById(int userId);
-            //Task<ApplicationUser> Login(string email, string password);
-        }
+            Task<ApplicationUser> LoginUserAsync(UserLoginDto userLoginDto);
+    }
     
 }

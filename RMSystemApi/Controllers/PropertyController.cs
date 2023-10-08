@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.PropertyModel;
 using Services.Interfaces;
@@ -38,15 +39,16 @@ namespace RMSystemApi.Controllers
             return Ok(property);
         }
 
+       // [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateProperty(PropertyDto model)
+        public async Task<IActionResult> CreateProperty(PropertyDto propertyDto)
         {
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(x => x.Errors);
                 return BadRequest(errors);
             }
-            model = await _propertyService.AddProperty(model);
+             await _propertyService.AddProperty(propertyDto);
             return Ok();
 
         }

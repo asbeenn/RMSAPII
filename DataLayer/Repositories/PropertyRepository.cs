@@ -48,18 +48,14 @@ namespace DataLayer.Repositories
 
 
 
-         public async Task<PropertyDto> AddProperty(PropertyDto model)
+        public async Task<bool> AddProperty(Property property)
         {
-         
-
-            var entity = _mapper.Map<DataLayer.Entities.Property>(model);
-
-            await DBContext.Properties.AddAsync(entity);
+            await DBContext.Properties.AddAsync(property);
             DBContext.SaveChanges();
+            return true;
+        } 
 
-            //model.PropertyId = entity.PropertyId;
-            return model;
-        }
+       
 
 
 
@@ -121,6 +117,13 @@ namespace DataLayer.Repositories
 
             return properties;
         }
+
+        public Task<bool> AddProperty(PropertyDto property)
+        {
+            throw new NotImplementedException();
+        }
+
+      
     }
 }
 

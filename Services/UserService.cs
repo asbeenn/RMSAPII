@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
 using DataLayer.Entities;
 using DataLayer.Interfaces;
 using Microsoft.Extensions.Options;
@@ -16,10 +17,12 @@ namespace Services
     {
         private readonly AppSettings _appSettings;
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public UserService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork,IMapper mapper)
         {
             _appSettings = appSettings.Value;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task<bool> CreateUser(UserDto userDto)
         {
@@ -29,6 +32,13 @@ namespace Services
         public async Task<UserDto> GetUserById(int userId)
         {
             return await _unitOfWork.UserRepository.GetUserById(userId);
+        }
+
+        public async Task<ApplicationUser> LoginUserAsync(UserLoginDto userLoginDto)
+        {
+            var user = _mapper.Map<ApplicationUser>(userLoginDto);
+            var founduser = await _unitOfWork.UserRepository.LoginUserAsync(user);
+            return founduser;
         }
 
         //public async Task<ApplicationUser> Login(string email, string password)

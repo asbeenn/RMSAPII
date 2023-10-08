@@ -1,5 +1,9 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
+using DataLayer.Entities;
 using DataLayer.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Models.PropertyModel;
 using Services.Interfaces;
@@ -15,10 +19,16 @@ namespace Services
     {
         private readonly AppSettings _appSettings;
         private readonly IUnitOfWork _unitOfWork;
-        public PropertyService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _env;
+        private readonly string _imageDirectory;
+        private readonly IMapper _mapper;
+        public PropertyService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork,IWebHostEnvironment env,IMapper mapper)
         {
             _appSettings = appSettings.Value;
             _unitOfWork = unitOfWork;
+            _env = env;
+            _mapper = mapper;
+            _imageDirectory = env.WebRootPath + @"\Images\Properties";
         }
 
         public async Task<PropertyDto> GetPropertyById(int id)
@@ -26,9 +36,27 @@ namespace Services
             return await _unitOfWork.PropertyRepository.GetPropertyById(id);
         }
 
-        public async Task<PropertyDto> AddProperty(PropertyDto model)
+        public async Task<bool> AddProperty(PropertyDto propertyDto)
         {
-            return await _unitOfWork.PropertyRepository.AddProperty(model);
+
+            if (!Directory.Exists(_imageDirectory))
+            {
+                Directory.CreateDirectory(_imageDirectory);
+            }
+            FileInfo _fileInfo = new FileInfo(propertyDto.PropertyImage.FileName);
+            string filename = _fileInfo.Name.Replace(_fileInfo.Extension, "") + "_" + DateTime.Now.Ticks.ToString() + _fileInfo.Extension;
+            var _filePath = $"{_imageDirectory}\\{filename}";
+            using (var _fileStream = new FileStream(_filePath, FileMode.Create))
+            {
+                await propertyDto.PropertyImage.CopyToAsync(_fileStream);
+            }
+            string _urlPath = _filePath.Replace('\\', '/').Split("wwwroot").Last();
+            var property = _mapper.Map<DataLayer.Entities.Property>(propertyDto);
+            property.PropertyImage = _urlPath;
+            await _unitOfWork.PropertyRepository.AddProperty(property);
+            //await _unitOfWork.SaveChangesAsync();
+            return true;
+           // return await _unitOfWork.PropertyRepository.AddProperty(model);
         }
 
         public async Task<List<PropertyDto>> GetAllProperty()

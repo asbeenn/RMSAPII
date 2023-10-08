@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace DataLayer.Entities
 {
@@ -22,7 +23,9 @@ namespace DataLayer.Entities
 
         public virtual DbSet<ApplicationUser>  ApplicationUsers { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
-        //public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<UserRoles> UserRoles { get; set; }
         //public virtual DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -79,7 +82,18 @@ namespace DataLayer.Entities
                 entity.HasMany(u => u.Properties)
                     .WithOne(p => p.User)
                     .HasForeignKey(p => p.UserId)
-                    .OnDelete(DeleteBehavior.Cascade); // Adjust the delete behavior as needed
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(u => u.UserRoles)
+                .WithOne(ur => ur.User)
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                 entity.HasOne(e => e.Booking)
+                .WithOne(b => b.User)
+                .HasForeignKey<Booking>(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                // Adjust the delete behavior as needed
             });
 
 
@@ -131,6 +145,47 @@ namespace DataLayer.Entities
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<UserRoles>(entity =>
+            {
+                entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+                entity.HasOne(ur => ur.User)
+                    .WithMany(u => u.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+
+                entity.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.HasKey(e => e.BookingId); // Set BookingId as the primary key
+
+                entity.Property(e => e.BookingDate)
+                    .IsRequired();
+
+                entity.HasOne(e => e.Property) // Define the relationship with Property
+                    .WithMany(p => p.Bookings) // One Property can have multiple Bookings
+                    .HasForeignKey(e => e.PropertyId) // Foreign key for PropertyId
+                    .OnDelete(DeleteBehavior.Restrict); // You can adjust the delete behavior as needed
+
+                entity.HasOne(e => e.User) // Define the one-to-one relationship with ApplicationUser
+                    .WithOne(u => u.Booking) // One User can have only one Booking
+                    .HasForeignKey<Booking>(e => e.UserId) // Foreign key for UserId in Booking
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

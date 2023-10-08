@@ -10,6 +10,6 @@ namespace DataLayer.Interfaces
     {
         IPropertyRepository PropertyRepository { get; set; }
         IUserRepository UserRepository { get; set; }
-
+        IBookingRepository BookingRepository { get; set; }
     }
 }

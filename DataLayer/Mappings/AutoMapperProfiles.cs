@@ -16,7 +16,10 @@ namespace Models.Mappings
         {
             CreateMap<PropertyDto, Property>().ReverseMap();
             CreateMap<UpdatePropertyDto, Property>().ReverseMap();
+
             CreateMap<UserDto,ApplicationUser>().ReverseMap();
+
+            CreateMap<BookingDto, Booking>().ReverseMap();
         }
     }
 }

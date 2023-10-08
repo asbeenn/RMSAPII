@@ -102,6 +102,10 @@ namespace RMSystemApi.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("BookingStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
@@ -112,9 +116,10 @@ namespace RMSystemApi.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("Booking");
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Property", b =>
@@ -137,6 +142,9 @@ namespace RMSystemApi.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("PropertyImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PropertyName")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -147,8 +155,8 @@ namespace RMSystemApi.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<decimal?>("RentCost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("RentCost")
+                        .HasColumnType("int");
 
                     b.Property<string>("StateProvienceRegion")
                         .HasMaxLength(255)
@@ -183,7 +191,7 @@ namespace RMSystemApi.Migrations
                     b.ToTable("Property", (string)null);
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.Role", b =>
+            modelBuilder.Entity("DataLayer.Entities.Roles", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -191,18 +199,29 @@ namespace RMSystemApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
 
-                    b.Property<int?>("ApplicationUserUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("RoleId");
 
-                    b.HasIndex("ApplicationUserUserId");
+                    b.ToTable("Roles");
+                });
 
-                    b.ToTable("Role");
+            modelBuilder.Entity("DataLayer.Entities.UserRoles", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Booking", b =>
@@ -210,13 +229,13 @@ namespace RMSystemApi.Migrations
                     b.HasOne("DataLayer.Entities.Property", "Property")
                         .WithMany("Bookings")
                         .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("Booking")
+                        .HasForeignKey("DataLayer.Entities.Booking", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Property");
@@ -234,23 +253,43 @@ namespace RMSystemApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.Role", b =>
+            modelBuilder.Entity("DataLayer.Entities.UserRoles", b =>
                 {
-                    b.HasOne("DataLayer.Entities.ApplicationUser", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ApplicationUserUserId");
+                    b.HasOne("DataLayer.Entities.Roles", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Entities.ApplicationUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Booking")
+                        .IsRequired();
+
                     b.Navigation("Properties");
 
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Property", b =>
                 {
                     b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.Roles", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,7 @@ namespace DataLayer.Interfaces
     {
         Task<bool> CreateUser(UserDto model);
         Task<UserDto> GetUserById(int userId);
-        //Task<ApplicationUser> Login(UserDto userDto);
+
+        Task<ApplicationUser> LoginUserAsync(ApplicationUser user);
     }
 }

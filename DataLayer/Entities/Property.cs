@@ -22,6 +22,7 @@ namespace DataLayer.Entities
         public int? ZipPostalCode { get; set; }
         public string? PropertyType { get; set; }
         public int? RentCost { get; set; }
+        public string? PropertyImage { get; set; }   
 
 
         // Navigation property to ApplicationUser (User who owns the property)

@@ -11,7 +11,7 @@ namespace Services.Interfaces
     {
         Task<List<PropertyDto>> GetAllProperty();
         Task<PropertyDto> GetPropertyById(int id);
-        Task<PropertyDto> AddProperty(PropertyDto model);
+        Task<bool> AddProperty(PropertyDto propertyDto);
         Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto);
         Task<List<PropertyDto>> GetPropertiesByUserId(int userId);
     }

@@ -1,4 +1,5 @@
-﻿using Models.PropertyModel;
+﻿using DataLayer.Entities;
+using Models.PropertyModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace DataLayer.Interfaces
     {
         Task<PropertyDto> GetPropertyById(int id);
         Task<List<PropertyDto>> GetAllProperty();
-        Task<PropertyDto> AddProperty(PropertyDto property);
+        Task<bool> AddProperty(Property property);
         Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto);
         Task<List<PropertyDto>> GetPropertiesByUserId(int userId);
-
+        
     }
 }

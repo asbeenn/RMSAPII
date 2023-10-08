@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using Azure;
 using Common;
 using DataLayer.Entities;
 using DataLayer.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Models.PropertyModel;
 using Models.ViewModel;
-
-
 
 
 namespace DataLayer.Repositories
@@ -32,15 +33,12 @@ namespace DataLayer.Repositories
         public async Task<bool> CreateUser( UserDto userDto)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-
             // Check if a user with the same email already exists
             var existingUser = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Email == userDto.Email);
-
             if (existingUser != null)
             {
                 return false; //BadRequest( "User with this email already exists" );
             }
-
             var user = new ApplicationUser
             {
                 FirstName = userDto.FirstName,
@@ -55,30 +53,28 @@ namespace DataLayer.Repositories
                 StreetAddress2 = userDto.StreetAddress2,
                 CitySuburbTown = userDto.CitySuburbTown,
                 ZipCode = userDto.ZipCode,
-
             };
-
             // Add the user to the database
             _dbContext.ApplicationUsers.Add(user);
             await _dbContext.SaveChangesAsync();
-
             // Return a success response
             return true;
         }
-
-
-
         public async Task<UserDto> GetUserById(int userId)
         {
             var userEntity = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.UserId == userId);
-
             if (userEntity == null)
             {
                 return null; // User not found
             }
-
             // Map the user entity to UserDto
             return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public async Task<ApplicationUser> LoginUserAsync(ApplicationUser user)
+        {
+            var users = _dbContext.ApplicationUsers.SingleOrDefault(x => x.Email == user.Email);
+            return users;
         }
 
 
@@ -100,14 +96,16 @@ namespace DataLayer.Repositories
         //    if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.PasswordHash))
         //        return BadRequest("Username or password incorrect.");
 
-            
+
 
         //    return Ok(new { token });
         //}
 
-       
+
         //{
         //    throw new NotImplementedException();
         //}
+
+        // }
     }
 }
