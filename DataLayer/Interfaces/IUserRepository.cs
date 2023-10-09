@@ -10,9 +10,9 @@ namespace DataLayer.Interfaces
 {
     public interface IUserRepository
     {
-        Task<bool> CreateUser(UserDto model);
+        Task<bool> CreateUser(UserRegisterDto model);
         Task<UserDto> GetUserById(int userId);
-
-        Task<ApplicationUser> LoginUserAsync(ApplicationUser user);
+        Task<UserDto?> GetByEmail(string email);
     }
 }
+

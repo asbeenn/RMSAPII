@@ -2,6 +2,7 @@
 using Common;
 using DataLayer.Entities;
 using DataLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models;
 using System;
@@ -45,14 +46,14 @@ namespace DataLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<BookingDto>> GetBookingsByUserId(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
+    
         public Task<BookingDto> UpdateBooking(int bookingId, UpdateBookingDto updateBookingDto)
         {
             throw new NotImplementedException();
         }
+
+        
+
+        
     }
 }

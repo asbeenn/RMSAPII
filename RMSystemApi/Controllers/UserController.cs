@@ -18,20 +18,39 @@ namespace RMSystemApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-        public UserController(IUserService userService, IConfiguration configuration)
+        private readonly IRoleService _roleService;
+        public UserController(IUserService userService, IConfiguration configuration, IRoleService roleService)
         {
             _userService = userService;
             _configuration = configuration;
+            _roleService = roleService;
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterUser([FromForm]UserDto model)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto model)
         {
+            #region User Validation
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(x => x.Errors);
                 return BadRequest(errors);
             }
+
+            // check if role exist before assigning role to user
+            var role = await _roleService.GetByName(model.RoleName);
+            if (role == null)
+            {
+                return BadRequest("Role does not exist.");
+            }
+
+            // Check if a user with the same email already exists
+            var existingUser = await _userService.GetByEmail(model.Email);
+            if (existingUser != null)
+            {
+                return BadRequest($"User with {model.Email} already exist.");
+            }
+            #endregion
+
             await _userService.CreateUser(model);
             return Ok(model);
         }
@@ -47,54 +66,21 @@ namespace RMSystemApi.Controllers
 
 
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromForm] UserLoginDto loginDto)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserLoginDto model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var user = await _userService.LoginUserAsync(loginDto);
 
+            var userDto = await _userService.GetByEmail(model.Email);
+            if (userDto == null)
+                return BadRequest("Username or password is invalid");
 
-            if (user == null)
-                return BadRequest("Username or password incorrects.");
+            userDto.Password = model.Password;
+            var result = await _userService.ValidateUser(userDto, model.Password);
+            if (result == null)
+                return BadRequest("Username or password is invalid");
 
-            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
-                return BadRequest("Username or password incorrect.");
-
-            string token = GenerateToken(user);
-
+            var token = await _userService.GenerateJwtToken(userDto);
             return Ok(new { token });
-        }
-        private string GenerateToken(ApplicationUser user)
-        {
-            List<Claim> authclaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                //new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-               // new Claim(ClaimTypes.Role, user.Role),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Secret").Value!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var expiretime = DateTime.Now.AddHours(1);
-            var token = new JwtSecurityToken(
-                claims: authclaims,
-                expires: expiretime,
-                signingCredentials: creds
-                );
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            //CookieOptions cookieOptions = new CookieOptions()
-            //{
-            //    Expires = expiretime,
-            //    Secure = true
-            //};
-            //Response.Cookies.Append("jwt-token", jwt, cookieOptions);
-
-            return jwt;
         }
     }
 }

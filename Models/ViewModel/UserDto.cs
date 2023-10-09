@@ -12,8 +12,8 @@ namespace Models.ViewModel
     public class UserDto
     {
        
-      
-       
+       public int UserId { get; set; }
+
         [MaxLength(50)]
        
         public string FirstName { get; set; }
@@ -48,7 +48,7 @@ namespace Models.ViewModel
    
         public int? ZipCode { get; set; }
 
+        public string RoleName { get; set; }
 
-       
     }
 }

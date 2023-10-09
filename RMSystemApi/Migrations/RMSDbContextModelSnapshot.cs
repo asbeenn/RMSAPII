@@ -217,6 +217,12 @@ namespace RMSystemApi.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleId"));
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");

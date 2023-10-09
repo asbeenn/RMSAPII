@@ -18,17 +18,23 @@ namespace DataLayer
         {
             PropertyRepository = new PropertyRepository(_appSettings, _dbContext, this, _mapper);
             UserRepository = new UserRepository(_appSettings,_dbContext, this, _mapper);
+            RoleRepository = new RoleRepository(_appSettings, _dbContext, this, _mapper);
+            UserRoleRepository = new UserRoleRepository(_appSettings, _dbContext, this, _mapper);
             BookingRepository = new BookingRepository(_appSettings, _dbContext, this, _mapper);
         }
         public IPropertyRepository? PropertyRepository { get; set; }
        public IUserRepository? UserRepository { get; set; }
         public IBookingRepository BookingRepository { get; set; }
+        public IRoleRepository? RoleRepository { get; set; }
+        public IUserRoleRepository? UserRoleRepository { get; set; }
 
         public void Dispose()
         {
             PropertyRepository = null;
             UserRepository = null;
             BookingRepository = null;
+            RoleRepository = null;
+            UserRoleRepository = null;
         }
     }
 }

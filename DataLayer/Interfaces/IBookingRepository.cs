@@ -11,7 +11,7 @@ namespace DataLayer.Interfaces
     public interface IBookingRepository
     {
         Task<bool> CreateBooking(Booking booking);
-        Task<List<BookingDto>> GetBookingsByUserId(int userId);
+        
         Task<List<BookingDto>> GetBookingsByPropertyId(int propertyId);
         Task<bool> CancelBooking(int bookingId);
         Task<BookingDto> UpdateBooking(int bookingId, UpdateBookingDto updateBookingDto);

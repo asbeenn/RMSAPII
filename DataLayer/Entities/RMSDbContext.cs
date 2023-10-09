@@ -8,17 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using Common;
+using Microsoft.Extensions.Options;
 
 namespace DataLayer.Entities
 {
     public partial class RMSDbContext : DbContext
 
     {
-        //public RMSDbContext()
-        //{
-        //}
-        public RMSDbContext(DbContextOptions<RMSDbContext> options) : base(options)
+        private readonly AppSettings _appSettings;
+        public RMSDbContext(DbContextOptions<RMSDbContext> options, IOptions<AppSettings> appSettings) : base(options)
         {
+            _appSettings = appSettings.Value;
         }
 
         public virtual DbSet<ApplicationUser>  ApplicationUsers { get; set; }

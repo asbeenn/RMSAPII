@@ -30,15 +30,10 @@ namespace DataLayer.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateUser( UserDto userDto)
+        public async Task<bool> CreateUser(UserRegisterDto userDto)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-            // Check if a user with the same email already exists
-            var existingUser = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Email == userDto.Email);
-            if (existingUser != null)
-            {
-                return false; //BadRequest( "User with this email already exists" );
-            }
+
             var user = new ApplicationUser
             {
                 FirstName = userDto.FirstName,
@@ -53,59 +48,42 @@ namespace DataLayer.Repositories
                 StreetAddress2 = userDto.StreetAddress2,
                 CitySuburbTown = userDto.CitySuburbTown,
                 ZipCode = userDto.ZipCode,
+
             };
+            var roleId = (int)Enum.Parse(typeof(Enums.RoleNames), userDto.RoleName);
+            user.UserRoles = new List<UserRoles>();
+            user.UserRoles.Add(new UserRoles
+            {
+                RoleId = roleId
+            });
+
             // Add the user to the database
             _dbContext.ApplicationUsers.Add(user);
             await _dbContext.SaveChangesAsync();
-            // Return a success response
             return true;
         }
+
+
+
         public async Task<UserDto> GetUserById(int userId)
         {
             var userEntity = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.UserId == userId);
+
             if (userEntity == null)
-            {
                 return null; // User not found
-            }
+
             // Map the user entity to UserDto
             return _mapper.Map<UserDto>(userEntity);
         }
 
-        public async Task<ApplicationUser> LoginUserAsync(ApplicationUser user)
+        public async Task<UserDto?> GetByEmail(string email)
         {
-            var users = _dbContext.ApplicationUsers.SingleOrDefault(x => x.Email == user.Email);
-            return users;
+            var user = await _dbContext.ApplicationUsers.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            if (user != null)
+                return _mapper.Map<UserDto>(user);
+            return null;
         }
 
 
-
-        //public Task<ApplicationUser> Login(UserDto userDto)
-        //{
-        //    string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-        //    // Find a user with the given email
-        //    var user =  _dbContext.ApplicationUsers
-        //        .FirstOrDefault(u => u.Email == userDto.Email);
-
-        //    if (user == null)
-        //    {
-        //        // User with the given email doesn't exist
-        //        return null;
-        //    }
-
-        //    // Validate the password (you need to implement password hashing)
-        //    if (!BCrypt.Net.BCrypt.Verify(userDto.Password, user.PasswordHash))
-        //        return BadRequest("Username or password incorrect.");
-
-
-
-        //    return Ok(new { token });
-        //}
-
-
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        // }
     }
 }

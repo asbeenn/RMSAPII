@@ -10,8 +10,8 @@ namespace DataLayer.Interfaces
 {
     public interface IPropertyRepository
     {
-        Task<PropertyDto> GetPropertyById(int id);
-        Task<List<PropertyDto>> GetAllProperty();
+        Task<GetPropertyDto> GetPropertyById(int id);
+        Task<List<GetPropertyDto>> GetAllProperty();
         Task<bool> AddProperty(Property property);
         Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto);
         Task<List<PropertyDto>> GetPropertiesByUserId(int userId);

@@ -33,14 +33,14 @@ namespace DataLayer.Repositories
 
 
 
-        public async Task<PropertyDto?> GetPropertyById(int id)
+        public async Task<GetPropertyDto?> GetPropertyById(int id)
         {
        
 
             var property = await DBContext.Properties.FindAsync(id);
             if (property != null)
             {
-                return _mapper.Map<PropertyDto>(property);
+                return _mapper.Map<GetPropertyDto>(property);
             }
             return null;
         }
@@ -62,13 +62,14 @@ namespace DataLayer.Repositories
 
 
 
-        public async Task<List<PropertyDto>> GetAllProperty()
+        public async Task<List<GetPropertyDto>> GetAllProperty()
         {
          
             var properties = await _dbContext.Properties.ToListAsync();
 
             // Use AutoMapper to map the list of entities to a list of PropertyDto
-            var propertyDtoList = _mapper.Map<List<PropertyDto>>(properties);
+            var propertyDtoList = _mapper.Map<List<GetPropertyDto>>(properties);
+            
 
             return propertyDtoList;
 

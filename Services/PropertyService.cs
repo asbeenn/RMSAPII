@@ -31,7 +31,7 @@ namespace Services
             _imageDirectory = env.WebRootPath + @"\Images\Properties";
         }
 
-        public async Task<PropertyDto> GetPropertyById(int id)
+        public async Task<GetPropertyDto> GetPropertyById(int id)
         {
             return await _unitOfWork.PropertyRepository.GetPropertyById(id);
         }
@@ -59,7 +59,7 @@ namespace Services
            // return await _unitOfWork.PropertyRepository.AddProperty(model);
         }
 
-        public async Task<List<PropertyDto>> GetAllProperty()
+        public async Task<List<GetPropertyDto>> GetAllProperty()
         {
             return await _unitOfWork.PropertyRepository.GetAllProperty();
         }

@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Entities
 {
@@ -21,11 +22,12 @@ namespace DataLayer.Entities
             {
                 Properties = new HashSet<Property>();
              
-                UserRoles = new HashSet<UserRoles>();
+                //UserRoles = new HashSet<UserRoles>();
             }
 
             [Key]
-            public int UserId { get; set; }
+            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int UserId { get; set; }
 
             [MaxLength(50)]
             [Required]

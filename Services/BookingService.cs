@@ -47,11 +47,7 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<BookingDto>> GetBookingsByUserId(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
+      
         public Task<BookingDto> UpdateBooking(int bookingId, UpdateBookingDto updateBookingDto)
         {
             throw new NotImplementedException();

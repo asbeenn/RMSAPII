@@ -10,6 +10,7 @@ using Services;
 using Models.Mappings;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<RMSDbContext>(options =>
 {
     options.UseSqlServer(connectionString,
-        b => b.MigrationsAssembly("RMSystemApi"));
+         b => b.MigrationsAssembly("RMSystemApi"));
 });
 
+var config = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -33,14 +37,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["AppSettings:JwtIssuer"],
         ValidAudience = builder.Configuration["AppSettings:JwtAudience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:JwtKey"])),
-        ClockSkew = TimeSpan.Zero
-    }) ;
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.JwtKey))
+
+    });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddScoped<RMSDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 
@@ -49,6 +54,7 @@ builder.Services.AddScoped<IPropertyService, PropertyService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -81,6 +87,7 @@ app.UseCors(options =>
 });
 
 app.UseAuthentication();
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.PropertyModel;
 using Services.Interfaces;
+using DataLayer.Entities;
 
 namespace RMSystemApi.Controllers
 {
@@ -39,9 +40,9 @@ namespace RMSystemApi.Controllers
             return Ok(property);
         }
 
-       // [Authorize]
+        //[Authorize(Roles="Tenant")]
         [HttpPost]
-        public async Task<IActionResult> CreateProperty(PropertyDto propertyDto)
+        public async Task<IActionResult> CreateProperty([FromForm] PropertyDto propertyDto)
         {
             if (!ModelState.IsValid)
             {

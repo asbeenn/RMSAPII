@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataLayer.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Operations;
 using Models;
@@ -11,18 +12,18 @@ namespace RMSystemApi.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
-        public BookingController(IBookingService bookingService)
+        private readonly IUnitOfWork _unitOfWork;
+        public BookingController(IBookingService bookingService, IUnitOfWork unitOfWork)
         {
             _bookingService = bookingService;
+            _unitOfWork = unitOfWork;
         }
 
-        [HttpPost]
-        
+        [HttpPost("createBooking")]
         public async Task<IActionResult> CreateBooking(BookingDto bookingDto)
         {
             await _bookingService.CreateBooking(bookingDto);
             return Ok();
         }
-        
     }
 }
