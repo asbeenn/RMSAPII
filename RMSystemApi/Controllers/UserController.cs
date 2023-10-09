@@ -20,7 +20,7 @@ namespace RMSystemApi.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterUser([FromForm]UserDto model)
+        public async Task<IActionResult> RegisterUser(UserDto model)
         {
             #region User Validation
             if (!ModelState.IsValid)
@@ -71,7 +71,7 @@ namespace RMSystemApi.Controllers
                 return BadRequest("Username or password is invalid");
 
             var token = await _userService.GenerateJwtToken(userDto);
-            return Ok(token);
+            return Ok( new { email = model.Email, token = token });
         }
     }
 }

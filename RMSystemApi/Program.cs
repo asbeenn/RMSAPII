@@ -47,6 +47,18 @@ builder.Services.AddScoped<IPropertyService, PropertyService>();
 
 // Add services to the container.
 
+#region CorsPolicy
+string corsPolicyName = "RMS_POLICY";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicyName, builder =>
+        builder.WithOrigins(config.AllowedOrigin)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+    );
+});
+#endregion
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -60,6 +72,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(corsPolicyName);
 
 app.UseHttpsRedirection();
 

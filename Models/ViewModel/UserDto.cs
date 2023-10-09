@@ -11,7 +11,7 @@ namespace Models.ViewModel
 {
     public class UserDto
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
 
         [MaxLength(50)]

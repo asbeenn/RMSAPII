@@ -57,7 +57,8 @@ namespace Services
 
         public async Task<object> GenerateJwtToken(UserDto user)
         {
-            IList<RoleDto> userRoles = await GetUserRolesByUserId(user.UserId);
+            int userId = user.UserId ?? 0;
+            IList<RoleDto> userRoles = await GetUserRolesByUserId(userId);
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
