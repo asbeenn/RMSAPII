@@ -51,15 +51,14 @@ namespace RMSystemApi.Controllers
             }
              await _propertyService.AddProperty(propertyDto);
             return Ok();
-
         }
 
 
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProperty(int Id, UpdatePropertyDto updatePropertyDto)
+        public async Task<IActionResult> UpdateProperty([FromForm] UpdatePropertyDto updatePropertyDto)
         {
-            var property = await _propertyService.UpdateProperty(Id, updatePropertyDto);
+            var property = await _propertyService.UpdateProperty(updatePropertyDto);
             return Ok(property);
         }
 

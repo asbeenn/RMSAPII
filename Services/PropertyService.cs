@@ -64,9 +64,9 @@ namespace Services
             return await _unitOfWork.PropertyRepository.GetAllProperty();
         }
 
-        public async Task<PropertyDto> UpdateProperty(int PropertyId, UpdatePropertyDto updatePropertyDto)
+        public async Task<PropertyDto> UpdateProperty(UpdatePropertyDto updatePropertyDto)
         {
-            return await _unitOfWork.PropertyRepository.UpdateProperty(PropertyId, updatePropertyDto);
+            return await _unitOfWork.PropertyRepository.UpdateProperty(updatePropertyDto);
         }
 
         public async Task<List<PropertyDto>> GetPropertiesByUserId(int userId)

@@ -12,7 +12,7 @@ namespace Services.Interfaces
         Task<List<GetPropertyDto>> GetAllProperty();
         Task<GetPropertyDto> GetPropertyById(int id);
         Task<bool> AddProperty(PropertyDto propertyDto);
-        Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto);
+        Task<PropertyDto> UpdateProperty(UpdatePropertyDto updatePropertyDto);
         Task<List<PropertyDto>> GetPropertiesByUserId(int userId);
     }
 }

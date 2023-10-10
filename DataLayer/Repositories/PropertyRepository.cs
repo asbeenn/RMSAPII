@@ -54,16 +54,25 @@ namespace DataLayer.Repositories
             return propertyDtoList;
         }
 
-        public async Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto)
+        public async Task<PropertyDto> UpdateProperty(UpdatePropertyDto updatePropertyDto)
         {
 
-            var property = await _dbContext.Properties.FindAsync(propertyId);
+            var property = await _dbContext.Properties.FindAsync(updatePropertyDto.propertyId);
             if (property == null)
             {
                 return null;
             }
             // Use AutoMapper to map properties from `updatePropertyDto` to `property`
-            _mapper.Map(updatePropertyDto, property);
+            //_mapper.Map(updatePropertyDto, property);
+            property.PropertyType = updatePropertyDto.PropertyType;
+            property.StreetAddress = updatePropertyDto.StreetAddress;
+            property.StreetAddress2 = updatePropertyDto.StreetAddress2;
+            property.CitySuburbTown = updatePropertyDto.CitySuburbTown;
+            property.Country = updatePropertyDto.Country;
+            property.StateProvienceRegion = updatePropertyDto.StateProvienceRegion;
+            property.ZipPostalCode = updatePropertyDto.ZipPostalCode;
+            property.PropertyName = updatePropertyDto.PropertyName;
+            property.RentCost = updatePropertyDto.RentCost;
             DBContext.SaveChanges();
 
             // Use AutoMapper to map the updated `property` to a `PropertyDto`
@@ -83,6 +92,7 @@ namespace DataLayer.Repositories
                 StreetAddress2 = p.StreetAddress2,
                 PropertyImageUrl = p.PropertyImage??"",
                 Country = p.Country,
+                RentCost = p.RentCost
             })
             .ToListAsync();
 
