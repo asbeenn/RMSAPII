@@ -33,7 +33,7 @@ namespace DataLayer.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("data source=LENOVO-Y700\\MSSQL2022;initial catalog=RMSDb;persist security info=True;User Id=sa;Password=abc123#;MultipleActiveResultSets=True;App=EntityFramework;");
+                optionsBuilder.UseSqlServer(_appSettings.DefaultConnectionString);
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -169,23 +169,21 @@ namespace DataLayer.Entities
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Booking>(entity =>
-            {
-                entity.HasKey(e => e.BookingId); // Set BookingId as the primary key
+            //modelBuilder.Entity<Booking>(entity =>
+            //{
+            //    entity.HasKey(e => e.BookingId); // Set BookingId as the primary key
+            //    entity.Property(e => e.BookingDate)
+            //        .IsRequired();
+            //    entity.HasOne(e => e.Property) // Define the relationship with Property
+            //        .WithMany(p => p.Bookings) // One Property can have multiple Bookings
+            //        .HasForeignKey(e => e.PropertyId) // Foreign key for PropertyId
+            //        .OnDelete(DeleteBehavior.Restrict); // You can adjust the delete behavior as needed
 
-                entity.Property(e => e.BookingDate)
-                    .IsRequired();
-
-                entity.HasOne(e => e.Property) // Define the relationship with Property
-                    .WithMany(p => p.Bookings) // One Property can have multiple Bookings
-                    .HasForeignKey(e => e.PropertyId) // Foreign key for PropertyId
-                    .OnDelete(DeleteBehavior.Restrict); // You can adjust the delete behavior as needed
-
-                entity.HasOne(e => e.User) // Define the one-to-one relationship with ApplicationUser
-                    .WithOne(u => u.Booking) // One User can have only one Booking
-                    .HasForeignKey<Booking>(e => e.UserId) // Foreign key for UserId in Booking
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            //    entity.HasOne(e => e.User) // Define the one-to-one relationship with ApplicationUser
+            //        .WithOne(u => u.Booking) // One User can have only one Booking
+            //        .HasForeignKey<Booking>(e => e.UserId) // Foreign key for UserId in Booking
+            //        .OnDelete(DeleteBehavior.Restrict);
+            //});
 
 
             OnModelCreatingPartial(modelBuilder);

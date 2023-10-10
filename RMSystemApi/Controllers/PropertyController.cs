@@ -33,7 +33,7 @@ namespace RMSystemApi.Controllers
             return Ok(property);
         }
 
-        [HttpGet("userId")]
+        [HttpGet("GetPropertiesByUserId/{userId}")]
         public async Task<IActionResult> GetPropertiesByUserId(int userId)
         {
             var property = await _propertyService.GetPropertiesByUserId(userId);

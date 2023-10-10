@@ -27,23 +27,59 @@ namespace DataLayer.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public Task<bool> CancelBooking(int bookingId)
+        public async Task<bool> CancelBooking(int bookingId)
         {
-            throw new NotImplementedException();
+            var booking = await _dbContext.Bookings.Where(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+            if(booking != null)
+            {
+                booking.BookingStatus = Enums.BookingStatus.Canceled.ToString();
+                _dbContext.SaveChanges();
+                return true;
+            }
+            return false;
+
+        }
+
+        public async Task<bool> ConfirmBooking(int bookingId)
+        {
+            var booking = await _dbContext.Bookings.Where(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+            if(booking != null)
+            {
+                booking.BookingStatus = Enums.BookingStatus.Confirmed.ToString();
+                _dbContext.SaveChanges();
+                return true;
+            }
+            return false;
+
+        }
+
+        public async Task<bool> DeleteBooking(int bookingId)
+        {
+            var booking = await _dbContext.Bookings.Where(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+            if(booking != null)
+            {
+                booking.BookingStatus = Enums.BookingStatus.Deleted.ToString();
+                _dbContext.SaveChanges();
+                return true;
+            }
+            return false;
+
         }
 
         public async Task<bool> CreateBooking(Booking booking)
-        {
-            
-             _dbContext.Bookings.AddAsync(booking);
+        {            
+            await _dbContext.Bookings.AddAsync(booking);
             await _dbContext.SaveChangesAsync();
             return true;
 
         }
 
-        public Task<List<BookingDto>> GetBookingsByPropertyId(int propertyId)
+        public async Task<List<BookingDto>?> GetBookingsByPropertyId(int propertyId)
         {
-            throw new NotImplementedException();
+            var bookings = await _dbContext.Bookings.Where(x => x.PropertyId == propertyId).ToListAsync();
+            if(bookings != null)    
+                return _mapper.Map<List<BookingDto>>(bookings);
+            return null;
         }
 
     
@@ -52,8 +88,27 @@ namespace DataLayer.Repositories
             throw new NotImplementedException();
         }
 
-        
+        public async Task<BookingDto?> GetById(int bookingId)
+        {
+            var booking = await _dbContext.Bookings.Where(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+            if(booking != null)
+                return _mapper.Map<BookingDto>(booking);
+            return null;
+        }
 
-        
+        public async Task<List<BookingDto>?> GetAll()
+        {
+            List<string> validBookingStatus = new List<string> { 
+                Enums.BookingStatus.Pending.ToString(),
+                Enums.BookingStatus.Canceled.ToString() };
+            var bookings = await _dbContext.Bookings.Where(x=> validBookingStatus.Contains(x.BookingStatus)).ToListAsync();
+            if (bookings != null)
+                return _mapper.Map<List<BookingDto>>(bookings);
+            return null;
+        }
+
+
+
+
     }
 }

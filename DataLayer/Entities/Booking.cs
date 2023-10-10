@@ -12,8 +12,9 @@ namespace DataLayer.Entities
         [Key]
         public int BookingId { get; set; }
         public int PropertyId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public DateTime BookingDate { get; set; }
+        public DateTime ConfirmedDate { get;set; }
         public string BookingStatus { get; set; }
 
         // Navigation property to Property (Property associated with this booking)

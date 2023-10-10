@@ -80,7 +80,7 @@ namespace RMSystemApi.Controllers
                 return BadRequest("Username or password is invalid");
 
             var token = await _userService.GenerateJwtToken(userDto);
-            return Ok(new { token });
+            return Ok(new { email=model.Email, token = token, userId =  userDto.UserId});
         }
     }
 }

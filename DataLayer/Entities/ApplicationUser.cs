@@ -71,10 +71,10 @@ namespace DataLayer.Entities
 
             [MaxLength(15)]
             public int? ZipCode { get; set; }
-          public virtual Booking Booking { get; set; }
+            public virtual Booking Booking { get; set; }
  
-        // Navigation property to Property (Properties owned by this user)
-        public virtual ICollection<Property> Properties { get; set; }
+            // Navigation property to Property (Properties owned by this user)
+            public virtual ICollection<Property> Properties { get; set; }
 
             // Navigation property to UserRole (Roles associated with this user)
             public virtual ICollection<UserRoles> UserRoles { get; set; }

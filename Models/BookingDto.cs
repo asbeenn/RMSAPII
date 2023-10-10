@@ -10,7 +10,7 @@ namespace Models
     {
         
         public int PropertyId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public DateTime BookingDate { get; set; }
         public string BookingStatus { get; set; }
     }

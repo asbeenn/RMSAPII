@@ -12,7 +12,8 @@ namespace Common
         {
             Pending,    // The booking is pending approval
             Confirmed,  // The booking is confirmed
-            Canceled    // The booking is canceled
+            Canceled,    // The booking is canceled
+            Deleted 
         }
         public enum RoleNames
         {
