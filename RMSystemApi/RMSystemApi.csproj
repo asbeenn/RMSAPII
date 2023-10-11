@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\Images\Users\" />
     <Folder Include="wwwroot\Images\Properties\" />
   </ItemGroup>
 

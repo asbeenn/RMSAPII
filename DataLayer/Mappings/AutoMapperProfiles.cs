@@ -21,6 +21,7 @@ namespace Models.Mappings
 
             CreateMap<UserDto,ApplicationUser>().ReverseMap();
             CreateMap<UserRegisterDto, ApplicationUser>().ReverseMap();
+            CreateMap<ViewUserDto, ApplicationUser>().ReverseMap();
 
             CreateMap<RoleDto, Roles>().ReverseMap();
             CreateMap<UserRoleDto, UserRoles>().ReverseMap();

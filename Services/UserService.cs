@@ -2,6 +2,7 @@
 using Common;
 using DataLayer.Entities;
 using DataLayer.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Models.PropertyModel;
@@ -21,16 +22,45 @@ namespace Services
     {
         private readonly AppSettings _appSettings;
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _env;
+        private readonly string _imageDirectory;
+        private readonly IMapper _mapper;
+        public UserService(IOptions<AppSettings> appSettings, IUnitOfWork unitOfWork, IWebHostEnvironment env,IMapper mapper)
         {
             _appSettings = appSettings.Value;
             _unitOfWork = unitOfWork;
+            _imageDirectory = env.WebRootPath + @"\Images\Users";
+            _env = env;
+            _mapper = mapper;
         }
         public async Task<bool> CreateUser(UserRegisterDto userDto)
         {
-            return await _unitOfWork.UserRepository.CreateUser(userDto);
+            //return await _unitOfWork.UserRepository.CreateUser(userDto);
+
+            if (!Directory.Exists(_imageDirectory))
+            {
+                Directory.CreateDirectory(_imageDirectory);
+            }
+            FileInfo _fileInfo = new FileInfo(userDto.PhotoUrl.FileName);
+            string filename = _fileInfo.Name.Replace(_fileInfo.Extension, "") + "_" + DateTime.Now.Ticks.ToString() + _fileInfo.Extension;
+            var _filePath = $"{_imageDirectory}\\{filename}";
+            using (var _fileStream = new FileStream(_filePath, FileMode.Create))
+            {
+                await userDto.PhotoUrl.CopyToAsync(_fileStream);
+            }
+            string _urlPath = _filePath.Replace('\\', '/').Split("wwwroot").Last();
+            //var user = _mapper.Map<DataLayer.Entities.ApplicationUser>(userDto);
+           // user.PhotoUrl = _urlPath;
+            await _unitOfWork.UserRepository.CreateUser(userDto,_urlPath);
+            //await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
+
+        public async Task<List<ViewUserDto>> GetAllUser()
+        {
+            return await _unitOfWork.UserRepository.GetAllUser();
+        }
         public async Task<UserDto?> GetByEmail(string email)
         {
             return await _unitOfWork.UserRepository.GetByEmail(email);

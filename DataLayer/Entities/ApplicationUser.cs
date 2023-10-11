@@ -47,9 +47,7 @@ namespace DataLayer.Entities
             [Required]
             public string PasswordHash { get; set; }
 
-            [NotNull]
-            [MaxLength(100)]
-            public string PhotoUrl { get; set; }
+            public string? PhotoUrl { get; set; }
 
             [NotNull]
             [MaxLength(100)]

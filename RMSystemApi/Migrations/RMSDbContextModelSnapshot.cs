@@ -106,6 +106,9 @@ namespace RMSystemApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("ConfirmedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
@@ -235,7 +238,7 @@ namespace RMSystemApi.Migrations
                     b.HasOne("DataLayer.Entities.Property", "Property")
                         .WithMany("Bookings")
                         .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Entities.ApplicationUser", "User")

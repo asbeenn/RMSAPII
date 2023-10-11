@@ -102,17 +102,18 @@ namespace DataLayer.Repositories
             return updatedPropertyDto;
         }
 
-        public async Task<List<PropertyDto>> GetPropertiesByUserId(int userId)
+        public async Task<List<GetPropertyDto>> GetPropertiesByUserId(int userId)
         {
             var properties = await _dbContext.Properties
         .Where(p => p.UserId == userId)
-        .Select(p => new PropertyDto
+        .Select(p => new GetPropertyDto
         {
            
             PropertyName = p.PropertyName,
             StreetAddress = p.StreetAddress,
             StreetAddress2 =p.StreetAddress2,
             Country = p.Country,
+            PropertyImage=p.PropertyImage,
         })
         .ToListAsync();
 

@@ -10,9 +10,10 @@ namespace Common
     {
         public enum BookingStatus
         {
-            Pending,    // The booking is pending approval
+            Pending=1,    // The booking is pending approval
             Confirmed,  // The booking is confirmed
-            Canceled    // The booking is canceled
+            Canceled, // The booking is canceled
+            Deleted 
         }
         public enum RoleNames
         {

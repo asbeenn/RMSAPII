@@ -14,7 +14,7 @@ namespace DataLayer.Interfaces
         Task<List<GetPropertyDto>> GetAllProperty();
         Task<bool> AddProperty(Property property);
         Task<PropertyDto> UpdateProperty(int propertyId, UpdatePropertyDto updatePropertyDto);
-        Task<List<PropertyDto>> GetPropertiesByUserId(int userId);
+        Task<List<GetPropertyDto>> GetPropertiesByUserId(int userId);
         
     }
 }

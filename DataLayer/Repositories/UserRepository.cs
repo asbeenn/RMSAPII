@@ -30,7 +30,7 @@ namespace DataLayer.Repositories
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateUser(UserRegisterDto userDto)
+        public async Task<bool> CreateUser(UserRegisterDto userDto,string photoUrl)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
@@ -41,7 +41,7 @@ namespace DataLayer.Repositories
                 LastName = userDto.LastName,
                 Email = userDto.Email,
                 PasswordHash = passwordHash,
-                PhotoUrl = userDto.PhotoUrl,
+                PhotoUrl = photoUrl,
                 IDUrl = userDto.IDUrl,
                 Country = userDto.Country,
                 StreetAddress1 = userDto.StreetAddress1,
@@ -83,7 +83,20 @@ namespace DataLayer.Repositories
                 return _mapper.Map<UserDto>(user);
             return null;
         }
+        public async Task<List<ViewUserDto>> GetAllUser()
+        {
 
+            var users = await _dbContext.ApplicationUsers
+                .Where(x=>x.UserRoles.Any(u=>u.RoleId!=1))
+                .ToListAsync();
+
+            // Use AutoMapper to map the list of entities to a list of PropertyDto
+            var userDtoList = _mapper.Map<List<ViewUserDto>>(users);
+
+
+            return userDtoList;
+
+        }
 
     }
 }

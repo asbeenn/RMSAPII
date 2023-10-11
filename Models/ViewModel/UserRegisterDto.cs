@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,8 +25,8 @@ namespace Models.ViewModel
         public string Password { get; set; } = string.Empty;
 
 
-        [MaxLength(100)]
-        public string PhotoUrl { get; set; }
+        
+        public IFormFile? PhotoUrl { get; set; }
 
         [MaxLength(100)]
         public string IDUrl { get; set; }

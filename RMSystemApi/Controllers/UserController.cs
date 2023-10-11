@@ -27,7 +27,7 @@ namespace RMSystemApi.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDto model)
+        public async Task<IActionResult> RegisterUser([FromForm] UserRegisterDto model)
         {
             #region User Validation
             if (!ModelState.IsValid)
@@ -64,7 +64,12 @@ namespace RMSystemApi.Controllers
             
         }
 
-
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var user = await _userService.GetAllUser();
+            return Ok(user);
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto model)

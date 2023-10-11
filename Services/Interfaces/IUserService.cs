@@ -14,6 +14,7 @@ namespace Services.Interfaces
     public interface IUserService
     {
         Task<bool> CreateUser(UserRegisterDto model);
+        Task<List<ViewUserDto>> GetAllUser();
         Task<UserDto?> GetByEmail(string email);
         Task<UserDto> GetUserById(int userId);
         Task<UserDto?> ValidateUser(UserDto user, string userPassword);

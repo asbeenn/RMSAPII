@@ -26,13 +26,22 @@ namespace Services
         {
             _appSettings = appSettings.Value;
             _unitOfWork = unitOfWork;
-           
+
             _mapper = mapper;
-          
+
         }
         public Task<bool> CancelBooking(int bookingId)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.BookingRepository.CancelBooking(bookingId);
+        }
+        public Task<bool> ConfirmBooking(int bookingId)
+        {
+            return _unitOfWork.BookingRepository.ConfirmBooking(bookingId);
+        }
+
+        public Task<bool> DeleteBooking(int bookingId)
+        {
+            return _unitOfWork.BookingRepository.DeleteBooking(bookingId);
         }
 
         public async Task<bool> CreateBooking(BookingDto bookingDto)
@@ -42,15 +51,25 @@ namespace Services
             return true;
         }
 
-        public Task<List<BookingDto>> GetBookingsByPropertyId(int propertyId)
+        public async Task<List<BookingDto>?> GetBookingsByPropertyId(int propertyId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.BookingRepository.GetBookingsByPropertyId(propertyId);
         }
 
-      
         public Task<BookingDto> UpdateBooking(int bookingId, UpdateBookingDto updateBookingDto)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<BookingDto?> GetById(int bookingId)
+        {
+            return await _unitOfWork.BookingRepository.GetById(bookingId);
+        }
+        public async Task<List<BookingDto>?> GetAll()
+        {
+            return await _unitOfWork.BookingRepository.GetAll();
+        }
+
+
     }
 }
