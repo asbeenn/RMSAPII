@@ -1,6 +1,0 @@
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.csproj.AssemblyReference.cache
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.AssemblyInfoInputs.cache
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.AssemblyInfo.cs
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.csproj.CoreCompileInputs.cache
-C:\Users\asbin.subedi\source\repos\RMSystemApi\RMSystemApi\obj\Debug\net7.0\RMSystemApi.MvcApplicationPartsAssemblyInfo.cache
