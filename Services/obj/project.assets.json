@@ -10844,19 +10844,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\asbin.subedi\\.nuget\\packages\\": {}
+    "C:\\Users\\kaasi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Services\\Services.csproj",
+      "projectUniqueName": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Services\\Services.csproj",
       "projectName": "Services",
-      "projectPath": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Services\\Services.csproj",
-      "packagesPath": "C:\\Users\\asbin.subedi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Services\\obj\\",
+      "projectPath": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Services\\Services.csproj",
+      "packagesPath": "C:\\Users\\kaasi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Services\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\asbin.subedi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kaasi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10870,14 +10870,14 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Common\\Common.csproj": {
-              "projectPath": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Common\\Common.csproj"
+            "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Common\\Common.csproj": {
+              "projectPath": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Common\\Common.csproj"
             },
-            "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\DataLayer\\DataLayer.csproj": {
-              "projectPath": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\DataLayer\\DataLayer.csproj"
+            "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\DataLayer\\DataLayer.csproj": {
+              "projectPath": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\DataLayer\\DataLayer.csproj"
             },
-            "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Models\\Models.csproj": {
-              "projectPath": "C:\\Users\\asbin.subedi\\source\\repos\\RMSystemApi\\Models\\Models.csproj"
+            "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Models\\Models.csproj": {
+              "projectPath": "C:\\Users\\kaasi\\OneDrive\\Desktop\\ASBIN\\RMSAPII\\Models\\Models.csproj"
             }
           }
         }
@@ -10977,7 +10977,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   },

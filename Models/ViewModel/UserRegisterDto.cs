@@ -28,7 +28,7 @@ namespace Models.ViewModel
         
         public IFormFile? PhotoUrl { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string IDUrl { get; set; }
 
 

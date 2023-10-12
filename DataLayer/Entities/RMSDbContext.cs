@@ -33,7 +33,7 @@ namespace DataLayer.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("data source=LENOVO-Y700\\MSSQL2022;initial catalog=RMSDb;persist security info=True;User Id=sa;Password=abc123#;MultipleActiveResultSets=True;App=EntityFramework;");
+                optionsBuilder.UseSqlServer(_appSettings.DefaultConnectionString);
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

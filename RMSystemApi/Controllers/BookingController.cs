@@ -26,6 +26,7 @@ namespace RMSystemApi.Controllers
         {
             bookingDto.BookingDate = DateTime.Now;
             bookingDto.BookingStatus=Enums.BookingStatus.Confirmed.ToString();
+           
             await _bookingService.CreateBooking(bookingDto);
             return Ok();
         }
